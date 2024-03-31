@@ -18,7 +18,7 @@ namespace lab4WinForms
             InitializeComponent();
             LoadProducts();
         }
-        private void LoadProducts()
+        public virtual void LoadProducts()
         {
             ProductListView.Items.Clear();
             ProductListView.LargeImageList = imageList;
@@ -68,7 +68,7 @@ namespace lab4WinForms
             }
         }
 
-        private void ChangeButton_Click(object sender, EventArgs e)
+        public virtual void ChangeButton_Click(object sender, EventArgs e)
         {
             if (ProductListView.SelectedItems.Count > 0)
             {
@@ -89,7 +89,7 @@ namespace lab4WinForms
             }
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
+        public virtual void DeleteButton_Click(object sender, EventArgs e)
         {
             if (ProductListView.SelectedItems.Count > 0)
             {
@@ -108,7 +108,7 @@ namespace lab4WinForms
             }
         }
 
-        private void AddButton_Click(object sender, EventArgs e)
+        public virtual void AddButton_Click(object sender, EventArgs e)
         {
             
                 
@@ -122,5 +122,7 @@ namespace lab4WinForms
             ProductListView.Items[ProductListView.Items.Count-1].Selected = true;
             MessageBox.Show("Добавлен шаблон товара");
         }
+
+        
     }
 }

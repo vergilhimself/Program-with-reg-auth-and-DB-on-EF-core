@@ -206,7 +206,7 @@
 
         #endregion
 
-        private ListView ProductListView;
+        public static ListView ProductListView;
         private ColumnHeader GoodsName;
         private ColumnHeader Id;
         private ColumnHeader GoodsPrice;
