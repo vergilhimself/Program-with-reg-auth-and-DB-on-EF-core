@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Net;
 
 namespace lab4WinForms
 {
@@ -21,6 +12,7 @@ namespace lab4WinForms
         public virtual void LoadProducts()
         {
             ProductListView.Items.Clear();
+            imageList.Images.Clear();
             ProductListView.LargeImageList = imageList;
             using (var context = new ProductContext())
             {
@@ -39,7 +31,11 @@ namespace lab4WinForms
                         }
 
                     }
-                    catch (Exception ex) { MessageBox.Show("Произошла ошибка: " + ex.Message); }
+                    catch (Exception ex) {
+                        
+                        MessageBox.Show("Произошла ошибка: " + ex.Message);
+
+                    }
 
 
                     // Создание элемента для ListView
@@ -79,14 +75,22 @@ namespace lab4WinForms
                     product = context.Products.Find(Convert.ToInt32(selected.SubItems[1].Text));
                     if (product != null)
                     {
-                        product.Name = Nametxb.Text;
-                        product.Price = Convert.ToDecimal(Pricetxb.Text);
-                        product.Image = Imagetbx.Text;
-                        context.SaveChanges();
+                        try
+                        {
+                            product.Name = Nametxb.Text;
+                            product.Price = Convert.ToDecimal(Pricetxb.Text);
+                            product.Image = Imagetbx.Text;
+                            context.SaveChanges();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Ошибка при вводе данных!");
+                        }
                     }
                 }
                 LoadProducts();
             }
+            else MessageBox.Show("Выберите товар для изменения!");
         }
 
         public virtual void DeleteButton_Click(object sender, EventArgs e)
@@ -106,23 +110,24 @@ namespace lab4WinForms
                 }
                 LoadProducts();
             }
+            else MessageBox.Show("Выберите товар для удаления!");
         }
 
         public virtual void AddButton_Click(object sender, EventArgs e)
         {
-            
-                
-                using (var context = new ProductContext())
-                {
-                    Product newproduct = new Product {  Name = "Новый товар", Image = "https://content.presspage.com/uploads/1369/1920_istock-1216828053-2.jpg?10000", Price= 0};
-                    context.Products.Add(newproduct);
-                    context.SaveChanges();
-                }
-                LoadProducts();
-            ProductListView.Items[ProductListView.Items.Count-1].Selected = true;
+
+
+            using (var context = new ProductContext())
+            {
+                Product newproduct = new Product { Name = "Новый товар", Image = "https://content.presspage.com/uploads/1369/1920_istock-1216828053-2.jpg?10000", Price = 0 };
+                context.Products.Add(newproduct);
+                context.SaveChanges();
+            }
+            LoadProducts();
+            ProductListView.Items[ProductListView.Items.Count - 1].Selected = true;
             MessageBox.Show("Добавлен шаблон товара");
         }
 
-        
+
     }
 }
