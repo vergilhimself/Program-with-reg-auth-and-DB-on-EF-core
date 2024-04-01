@@ -31,9 +31,23 @@ namespace lab4WinForms
                         }
 
                     }
-                    catch (Exception ex) {
-                        
-                        MessageBox.Show("Произошла ошибка: " + ex.Message);
+                    catch (Exception ex)
+                    {
+                        try
+                        {
+                            
+                            var request = WebRequest.Create("https://content.presspage.com/uploads/1369/1920_istock-1216828053-2.jpg?10000");
+                            using (var response = request.GetResponse())
+                            using (var stream = response.GetResponseStream())
+                            {
+                                imageList.Images.Add(product.Name, Image.FromStream(stream));
+                            }
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Произошла ошибка: " + ex.Message);
+                        }
+
 
                     }
 
