@@ -206,22 +206,22 @@
 
         #endregion
 
-        public static ListView ProductListView;
-        private ColumnHeader GoodsName;
-        private ColumnHeader Id;
-        private ColumnHeader GoodsPrice;
-        private ColumnHeader GoodsImage;
-        private ImageList imageList;
-        private GroupBox groupBox1;
-        private Label label3;
-        private Label label2;
-        private Label label1;
-        private Button DeleteButton;
-        private Button ChangeButton;
-        private TextBox Imagetbx;
-        private TextBox Nametxb;
-        private Button AddButton;
-        private PictureBox pictureBox1;
-        private TextBox Pricetxb;
+        public ListView ProductListView;
+        public ColumnHeader GoodsName;
+        public ColumnHeader Id;
+        public ColumnHeader GoodsPrice;
+        public ColumnHeader GoodsImage;
+        public ImageList imageList;
+        public GroupBox groupBox1;
+        public Label label3;
+        public Label label2;
+        public Label label1;
+        public Button DeleteButton;
+        public Button ChangeButton;
+        public TextBox Imagetbx;
+        public TextBox Nametxb;
+        public Button AddButton;
+        public PictureBox pictureBox1;
+        public TextBox Pricetxb;
     }
 }

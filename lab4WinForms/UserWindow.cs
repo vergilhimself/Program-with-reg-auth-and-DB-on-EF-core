@@ -1,6 +1,4 @@
 ﻿using System.Net;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace lab4WinForms
 {
     public partial class UserWindow : Form
@@ -10,7 +8,7 @@ namespace lab4WinForms
         public UserWindow()
         {
             InitializeComponent();
-            
+
             LoadProducts();
         }
 
@@ -32,7 +30,7 @@ namespace lab4WinForms
                         {
                             imageList.Images.Add(product.Name, Image.FromStream(stream));
                         }
-                        
+
                     }
                     catch (Exception ex) { MessageBox.Show("Произошла ошибка: " + ex.Message); }
 
@@ -40,16 +38,16 @@ namespace lab4WinForms
                     // Создание элемента для ListView
                     var listViewItem = new ListViewItem(new[] {
                     product.Name,
-                    product.Id.ToString(),                    
+                    product.Id.ToString(),
                     product.Price.ToString("C")
                     });
 
                     listViewItem.ImageIndex = imageList.Images.IndexOfKey(product.Name);
-                    
+
                     ProductListView.Items.Add(listViewItem);
 
                 }
-                
+
             }
         }
 

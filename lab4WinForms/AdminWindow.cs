@@ -8,8 +8,9 @@ namespace lab4WinForms
         {
             InitializeComponent();
             LoadProducts();
+
         }
-        public virtual void LoadProducts()
+        public void LoadProducts()
         {
             ProductListView.Items.Clear();
             imageList.Images.Clear();
@@ -35,7 +36,7 @@ namespace lab4WinForms
                     {
                         try
                         {
-                            
+
                             var request = WebRequest.Create("https://content.presspage.com/uploads/1369/1920_istock-1216828053-2.jpg?10000");
                             using (var response = request.GetResponse())
                             using (var stream = response.GetResponseStream())
@@ -78,7 +79,7 @@ namespace lab4WinForms
             }
         }
 
-        public virtual void ChangeButton_Click(object sender, EventArgs e)
+        public void ChangeButton_Click(object sender, EventArgs e)
         {
             if (ProductListView.SelectedItems.Count > 0)
             {
@@ -107,9 +108,9 @@ namespace lab4WinForms
             else MessageBox.Show("Выберите товар для изменения!");
         }
 
-        public virtual void DeleteButton_Click(object sender, EventArgs e)
+        public void DeleteButton_Click(object sender, EventArgs e)
         {
-            if (ProductListView.SelectedItems.Count > 0)
+            if (this.ProductListView.SelectedItems.Count > 0)
             {
                 var selected = ProductListView.SelectedItems[0];
                 using (var context = new ProductContext())
@@ -127,7 +128,7 @@ namespace lab4WinForms
             else MessageBox.Show("Выберите товар для удаления!");
         }
 
-        public virtual void AddButton_Click(object sender, EventArgs e)
+        public void AddButton_Click(object sender, EventArgs e)
         {
 
 

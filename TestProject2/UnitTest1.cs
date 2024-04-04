@@ -4,145 +4,92 @@ namespace TestProject2
     [TestClass]
     public class UnitTest1 : AdminWindow
     {
-        private void DeleteTestObject(ProductContext context)
+
+        [TestClass]
+        public class ProductTests
         {
-            //удалим тестовую запись
-            Product testProduct = context.Products.OrderBy(e => e.Id).Last();
-            if (testProduct != null)
+            EventArgs e = new EventArgs();
+            [TestMethod]
+            public void LoadProductsTest()
             {
-                //удаляем объект
-                context.Products.Remove(testProduct);
-                context.SaveChanges();
-            }
-        }
+                // Arrange
+                var productForm = new AdminWindow();
 
-        [TestMethod]
-        public void TestAdd()
-        {
-            using (var context = new ProductContext())
-            {
-                int countbefore = context.Products.Count();
-                AddButton_Click(sender, e);
-                int countafter = context.Products.Count();
+                // Act
+                productForm.LoadProducts();
 
-                Assert.AreNotEqual(countbefore, countafter);
-
-                DeleteTestObject(context);
-
-            }
-        }
-
-        [TestMethod]
-        public void TestUpdate()
-        {
-            using (var context = new ProductContext())
-            {
-
-                ChangeButton_Click(sender, e);
-
-                Assert.IsTrue(context.Products.Any(n => n.Name == "testName2"));
-                DeleteTestObject(context);
-
-            }
-        }
-        [TestMethod]
-        public void TestDelete()
-        {
-            using (var context = new ProductContext())
-            {
-                int countbefore = context.Products.Count();
-                DeleteButton_Click(sender, e);
-                int countafter = context.Products.Count();
-                Assert.AreEqual(countbefore, countafter);
+                // Assert
+                Assert.IsTrue(productForm.ProductListView.Items.Count > 0, "Не удалось загрузить продукты в ListView");
             }
 
-        }
-        [TestMethod]
-        public void TestSelect()
-        {
-            LoadProducts();
-            int notEmpty = AdminWindow.ProductListView.Items.Count;
-            Assert.AreNotEqual((int)0, notEmpty);
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        object sender = new object();
-        EventArgs e = new EventArgs();
-        public override void AddButton_Click(object sender, EventArgs e)
-        {
-            using (var context = new ProductContext())
+            [TestMethod]
+            public void AddProductsTest()
             {
-                Product newproduct = new Product { Name = "Новый товар", Image = "https://content.presspage.com/uploads/1369/1920_istock-1216828053-2.jpg?10000", Price = 0 };
-                context.Products.Add(newproduct);
-                context.SaveChanges();
-            }
-        }
-        public override void ChangeButton_Click(object sender, EventArgs e)
-        {
-            if (1 > 0)
-            {
-
-                var selected = new Product { Name = "testName", Image = "https://content.presspage.com/uploads/1369/1920_istock-1216828053-2.jpg?10000", Price = 0 };
+                // Arrange
+                var productForm = new AdminWindow();
 
                 using (var context = new ProductContext())
                 {
-                    context.Products.Add(selected); context.SaveChanges(); //создадим тестовый объект
-                    Product? product = null;
-                    product = context.Products.OrderBy(e => e.Id).Last();
-                    if (product != null)
-                    {
-                        product.Name = "testName2";
-                        product.Price = 0;
-                        product.Image = "https://content.presspage.com/uploads/1369/1920_istock-1216828053-2.jpg?10000";
-                        context.SaveChanges();
-                    }
+                    int countbefore = context.Products.Count();
 
+                    // Act
+                    productForm.AddButton_Click(productForm.AddButton, e);
 
+                    int countafter = context.Products.Count();
 
+                    Assert.IsTrue(countbefore != countafter, "Одно и то же кол-во товара");
                 }
-
-            }
-        }
-        public override void DeleteButton_Click(object sender, EventArgs e)
-        {
-
-            //создадим тестовый объект
-            Product newproduct = new Product { Name = "testobject", Image = "https://content.presspage.com/uploads/1369/1920_istock-1216828053-2.jpg?10000", Price = 0 };
-            using (var context = new ProductContext())
-            {
-                context.Products.Add(newproduct);
-                context.SaveChanges();
             }
 
-            if (1 > 0)
+
+            [TestMethod]
+            public void DeleteProductsTestSelected()
             {
-                var selected = newproduct;
+                // Arrange
+                var productForm = new AdminWindow();
+                productForm.Show();
+                productForm.LoadProducts();
+                productForm.ProductListView.Items[0].Selected = true;
+
                 using (var context = new ProductContext())
                 {
-                    Product? product = null;
-                    product = context.Products.OrderBy(e => e.Id).Last();
+                    int countbefore = context.Products.Count();
+
+                    // Act
+                    productForm.DeleteButton_Click(productForm.DeleteButton, e);
+
+                    int countafter = context.Products.Count();
+
+                    Assert.IsTrue(countbefore != countafter, "Одно и то же кол-во товара");
+                }
+            }
+            [TestMethod]
+            public void ChangeProductsTestSelected()
+            {
+                // Arrange
+                var productForm = new AdminWindow();
+                productForm.LoadProducts();
+                productForm.Show();
+                productForm.ProductListView.Items[0].Selected = true;
+                productForm.Nametxb.Text = "ChangedNameForTest";
+                using (var context = new ProductContext())
+                {
+                    var product = context.Products.Where(p => p.Name == "ChangedNameForTest").First();
                     if (product != null)
                     {
-                        context.Products.Remove(product);
+                        product.Name = "Новый товар";
                         context.SaveChanges();
                     }
+
+                    int countbefore = context.Products.Count(p => p.Name == "Новый товар");
+                    Console.WriteLine(countbefore);
+                    // Act
+                    productForm.ChangeButton_Click(productForm.ChangeButton, e);
+
+                    int countafter = context.Products.Count(p => p.Name == "Новый товар");
+                    Console.WriteLine(countafter);
+                    Assert.IsTrue((countbefore != countafter), "Одно и то же кол-во одинакого товара");
                 }
-                //LoadProducts();
             }
         }
     }
